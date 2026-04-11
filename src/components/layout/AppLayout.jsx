@@ -5,7 +5,7 @@ import Sidebar from './Sidebar'
 export default function AppLayout() {
   const { user, accessToken } = useAuthStore()
 
-  if (!user && !accessToken) {
+  if (!user || !accessToken) {
     return <Navigate to="/login" replace />
   }
 

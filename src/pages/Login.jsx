@@ -20,7 +20,12 @@ export default function Login() {
     setLoading(true)
     try {
       const { data } = await api.post('/auth/login', { email, password })
-      login(data.accessToken, data.user)
+      login(data.accessToken, {
+        id:    data.userId,
+        name:  data.name,
+        email: data.email,
+        role:  data.role,
+      })
       navigate('/')
     } catch (err) {
       setError(err.response?.data?.message ?? 'Invalid email or password')
