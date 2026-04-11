@@ -20,8 +20,10 @@ export default function TvDisplay() {
     enabled: !!doctorId,
   })
 
-  const current = queue?.find(t => t.status === 'IN_PROGRESS' || t.status === 'CALLED')
-  const next    = queue?.filter(t => t.status === 'WAITING')?.[0] ?? null
+  const active  = queue?.filter(t => ['IN_PROGRESS', 'CALLED', 'WAITING'].includes(t.status))
+                        ?.sort((a, b) => a.tokenNumber - b.tokenNumber) ?? []
+  const current = active[0] ?? null
+  const next    = active[1] ?? null
 
   return (
     <div className="min-h-screen bg-slate-900 text-white flex flex-col">
