@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import {
   LayoutDashboard, Calendar, Users, Stethoscope,
   FileText, BarChart2, Bell, Hospital, LogOut,
-  Tv, ClipboardList,
+  Tv, ClipboardList, X,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/store/authStore'
@@ -56,7 +56,7 @@ function TvPickerDialog({ open, onClose }) {
   )
 }
 
-export default function Sidebar() {
+export default function Sidebar({ onClose }) {
   const { user, logout } = useAuthStore()
   const navigate = useNavigate()
   const [tvOpen, setTvOpen] = useState(false)
@@ -72,16 +72,26 @@ export default function Sidebar() {
   )
 
   return (
-    <aside className="flex flex-col w-60 min-h-screen bg-slate-900 text-slate-100 shrink-0">
+    <aside className="flex flex-col w-64 h-screen bg-slate-900 text-slate-100 shrink-0">
       {/* Logo */}
       <div className="flex items-center gap-2.5 px-5 py-5 border-b border-slate-700/50">
         <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
           <Hospital className="h-4 w-4 text-white" />
         </div>
-        <div>
+        <div className="flex-1 min-w-0">
           <p className="text-sm font-bold leading-none">HMS Portal</p>
           <p className="text-xs text-slate-400 mt-0.5">Management</p>
         </div>
+        {/* Close button — mobile only */}
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="md:hidden p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            aria-label="Close menu"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
       </div>
 
       {/* Nav */}
@@ -91,6 +101,7 @@ export default function Sidebar() {
             key={to}
             to={to}
             end={to === '/'}
+            onClick={onClose}
             className={({ isActive }) =>
               cn(
                 'flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors',

@@ -15,7 +15,7 @@ import { cn, formatCurrency, formatDateTime, statusColor } from '@/lib/utils'
 function StatCard({ title, value, sub, icon: Icon, color }) {
   return (
     <Card>
-      <CardContent className="p-5 flex items-center gap-4">
+      <CardContent className="p-3 md:p-5 flex items-center gap-3 md:gap-4">
         <div className={cn('h-11 w-11 rounded-xl flex items-center justify-center shrink-0', color)}>
           <Icon className="h-5 w-5 text-white" />
         </div>
@@ -155,7 +155,7 @@ export default function Dashboard() {
   })
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 md:p-6 space-y-4 md:space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -168,7 +168,7 @@ export default function Dashboard() {
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 md:gap-4">
         <StatCard
           title="Today's Appointments"
           value={todayAppts?.length ?? '—'}
