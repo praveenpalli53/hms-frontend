@@ -27,10 +27,11 @@ const navItems = [
 
 function TvPickerDialog({ open, onClose }) {
   const [doctorId, setDoctorId] = useState('')
-  const { data: doctors } = useQuery({
-    queryKey: ['doctors-active'],
-    queryFn: () => api.get('/doctors?activeOnly=true').then(r => r.data),
+  const { data: doctors, isLoading, isError } = useQuery({
+    queryKey: ['doctors-tv-picker'],
+    queryFn: () => api.get('/doctors?activeOnly=false').then(r => r.data),
     enabled: open,
+    staleTime: 0,
   })
   function openTv() {
     if (doctorId) {
@@ -43,8 +44,16 @@ function TvPickerDialog({ open, onClose }) {
       <DialogContent className="max-w-xs">
         <DialogHeader><DialogTitle>Open TV Display</DialogTitle></DialogHeader>
         <Select value={doctorId} onValueChange={setDoctorId}>
-          <SelectTrigger><SelectValue placeholder="Select doctor…" /></SelectTrigger>
+          <SelectTrigger>
+            <SelectValue placeholder={isLoading ? 'Loading doctors…' : 'Select doctor…'} />
+          </SelectTrigger>
           <SelectContent>
+            {isError && (
+              <div className="px-2 py-1.5 text-sm text-red-500">Failed to load doctors</div>
+            )}
+            {!isLoading && !isError && doctors?.length === 0 && (
+              <div className="px-2 py-1.5 text-sm text-muted-foreground">No doctors found</div>
+            )}
             {doctors?.map(d => <SelectItem key={d.id} value={String(d.id)}>Dr. {d.name}</SelectItem>)}
           </SelectContent>
         </Select>
